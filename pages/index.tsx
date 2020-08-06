@@ -1,6 +1,14 @@
+import React from 'react'
+
+import SearchBar from '@components/search-bar'
+
 const Home: React.FC = () => {
+  const [search, setSearch] = React.useState('')
+
   return (
-    <h1 className="self-center my-auto font-bold text-4xl">🔎 GitHub Search</h1>
+    <>
+      <SearchBar value={search} onChange={setSearch} />
+    </>
   )
 }
 

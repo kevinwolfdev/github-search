@@ -1,4 +1,3 @@
-import cx from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
 import React from 'react'
 import { useDebouncedCallback } from 'use-debounce/lib'
@@ -21,37 +20,36 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => {
 
   const handleClear = React.useCallback(() => {
     ref.current!.value = ''
+    ref.current!.focus()
     onChange('')
   }, [onChange])
 
   return (
     <motion.div
       layout
-      className={cx(
-        'sticky top-0 bg-white flex items-center',
-        !value &&
-          'md:self-center md:w-full md:max-w-3xl md:my-auto md:rounded-lg'
-      )}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      className="sticky top-0 bg-white flex items-center"
+      initial={{ opacity: 0, y: -62 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25, delay: 0.25 }}
     >
       <SearchIcon className="absolute left-4 text-gray-600" />
       <input
         ref={ref}
         type="text"
         defaultValue={value}
-        placeholder="Search a GitHub user"
-        className="outline-none w-full shadow-md bg-transparent p-4 pl-12 text-xl placeholder-gray-600 relative z-10"
+        placeholder="Search..."
+        className="w-full shadow-md bg-transparent p-4 pl-12 text-xl placeholder-gray-600 relative z-10"
         onChange={(e) => debouncedCallback(e.target.value)}
       />
       <AnimatePresence>
         {value ? (
           <motion.button
+            type="button"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="absolute right-4 z-20 focus:outline-none"
+            transition={{ duration: 0.25 }}
+            className="absolute right-4 z-20"
             onClick={handleClear}
           >
             <ClearIcon className="text-red-500" />

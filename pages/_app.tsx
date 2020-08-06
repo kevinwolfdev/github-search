@@ -8,7 +8,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
       <Head>
-        <title>GitHub Search</title>
+        <title>GitHub User Search</title>
         <meta
           name="description"
           content="Search for GitHub users using GitHub Search API on top of Next.js, TailwindCSS and SWR"

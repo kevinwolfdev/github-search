@@ -1,3 +1,5 @@
+import React from 'react'
+
 export const parseResponseLinks = (
   header: string | null
 ): Record<string, string> =>
@@ -66,3 +68,9 @@ export const buildPagination = (currentPage: number, totalPages: number) => {
 
   return range(1, totalPages)
 }
+
+export const formatNumber = (value: number, text: string) => (
+  <span>
+    <strong>{value.toLocaleString()}</strong> {value === 1 ? text : `${text}s`}
+  </span>
+)

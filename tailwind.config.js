@@ -284,6 +284,14 @@ module.exports = {
       ...theme('spacing'),
       full: '100%',
       screen: '100vh',
+      ...Object.entries(theme('fontSize')).reduce(
+        (prev, [name, size]) => ({ ...prev, [`text-${name}`]: size }),
+        {}
+      ),
+      ...Object.entries(theme('lineHeight')).reduce(
+        (prev, [name, size]) => ({ ...prev, [`leading-${name}`]: `${size}em` }),
+        {}
+      ),
     }),
     inset: (theme) => ({
       '0': '0',

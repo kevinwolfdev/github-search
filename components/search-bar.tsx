@@ -2,6 +2,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 import React from 'react'
 import { useDebouncedCallback } from 'use-debounce/lib'
 
+import {
+  slideDownAnimation,
+  ANIMATION_DURATION,
+  appearAnimation,
+} from '@lib/animations'
+
 import ClearIcon from './icons/clear'
 import SearchIcon from './icons/search'
 
@@ -26,11 +32,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => {
 
   return (
     <motion.div
-      layout
-      className="sticky top-0 bg-white flex items-center"
-      initial={{ opacity: 0, y: -62 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25, delay: 0.25 }}
+      {...{
+        ...slideDownAnimation,
+        transition: {
+          ...slideDownAnimation.transition,
+          delay: ANIMATION_DURATION,
+        },
+      }}
+      className="sticky top-0 bg-white flex items-center z-10"
     >
       <SearchIcon className="absolute left-4 text-gray-600" />
       <input
@@ -44,11 +53,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => {
       <AnimatePresence>
         {value ? (
           <motion.button
+            {...appearAnimation}
             type="button"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
             className="absolute right-4 z-20"
             onClick={handleClear}
           >

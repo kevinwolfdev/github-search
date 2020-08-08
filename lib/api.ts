@@ -4,7 +4,26 @@ import { parseResponseLinks } from './utils'
 
 const API_ENDPOINT = 'https://api.github.com'
 
-export type SearchUsersResult = {
+const validateRateLimit = async (resource: string, window: string) => {
+  const res = await fetch(`${API_ENDPOINT}/rate_limit`)
+  const data = await res.json()
+
+  const { remaining, limit, reset } = data.resources[resource]
+
+  if (remaining === 0) {
+    const currentTime = moment()
+    const enabledTime = moment(reset * 1000)
+    let message = `GitHub ${resource} API rate limit of ${limit} requests per ${window} exceeded. Please try again`
+
+    if (enabledTime.isAfter(currentTime)) {
+      message += ` ${enabledTime.from(currentTime)}.`
+    }
+
+    throw new Error(message)
+  }
+}
+
+export type Search = {
   users: { login: string; avatar_url: string }[]
   pagination: {
     totalPages: number
@@ -12,37 +31,39 @@ export type SearchUsersResult = {
   }
 }
 
-export const searchUsers = async (
+export const search = async (
   query: string,
   perPage: number,
   page: number
-): Promise<SearchUsersResult> => {
-  const rateRes = await fetch(`${API_ENDPOINT}/rate_limit`)
-  const rateData = await rateRes.json()
+): Promise<Search> => {
+  await validateRateLimit('search', 'minute')
 
-  if (rateData.resources.search.remaining === 0) {
-    const currentTime = moment()
-    const enabledTime = moment(rateData.resources.search.reset * 1000)
-    let message = 'GitHub Search API quota exceeded, please try again'
+  const res = await fetch(
+    `${API_ENDPOINT}/search/users?q=${query}&per_page=${perPage}&page=${page}`
+  )
 
-    if (enabledTime.isAfter(currentTime)) {
-      message += ` ${enabledTime.from(currentTime)}`
-    }
-    throw new Error(message)
-  }
-
-  const url = `${API_ENDPOINT}/search/users?q=${query}&per_page=${perPage}&page=${page}`
-  const searchRes = await fetch(url)
-  const searchData = await searchRes.json()
-
-  const links = parseResponseLinks(searchRes.headers.get('link'))
+  const data = await res.json()
+  const links = parseResponseLinks(res.headers.get('link'))
   const lastPage = links.last?.match(/&page=(.*)/)?.[1]
 
   return {
-    users: searchData.items,
+    users: data.items,
     pagination: {
       totalPages: lastPage ? parseInt(lastPage) : page,
-      totalCount: searchData.total_count,
+      totalCount: data.total_count,
     },
   }
+}
+
+export type GetUser = {
+  name: string
+  public_repos: number
+  followers: number
+  created_at: Date
+}
+
+export const getUser = async (login: string): Promise<GetUser> => {
+  await validateRateLimit('core', 'hour')
+  const res = await fetch(`${API_ENDPOINT}/users/${login}`)
+  return res.json()
 }

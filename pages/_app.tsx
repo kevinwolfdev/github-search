@@ -6,7 +6,7 @@ import '@styles/main.css'
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
-    <>
+    <React.Fragment>
       <Head>
         <title>GitHub User Search</title>
         <meta
@@ -16,7 +16,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
       </Head>
 
       <Component {...pageProps} />
-    </>
+    </React.Fragment>
   )
 }
 

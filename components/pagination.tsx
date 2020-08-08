@@ -2,15 +2,19 @@ import cx from 'classnames'
 import { motion } from 'framer-motion'
 import React from 'react'
 
-import { SearchUsersResult } from '@lib/api'
-import { buildPagination } from '@lib/utils'
+import {
+  slideUpAnimation,
+  ANIMATION_DURATION,
+  appearAnimation,
+} from '@lib/animations'
+import { Search } from '@lib/api'
+import { buildPagination, formatNumber } from '@lib/utils'
 
 import MoreIcon from './icons/more'
 import NextPageIcon from './icons/next-page'
 import PrevPageIcon from './icons/prev-page'
 
-type PaginationProps = SearchUsersResult['pagination'] & {
-  isLoading: boolean
+type PaginationProps = Search['pagination'] & {
   page: number
   perPage: number
   setPerPage: (value: number) => void
@@ -18,10 +22,10 @@ type PaginationProps = SearchUsersResult['pagination'] & {
 }
 
 const Pagination: React.FC<PaginationProps> = ({
-  isLoading,
   page,
   perPage,
   totalPages,
+  totalCount,
   setPerPage,
   setPage,
 }) => {
@@ -32,18 +36,20 @@ const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <motion.div
+      {...{
+        ...slideUpAnimation,
+        transition: {
+          ...slideUpAnimation.transition,
+          delay: ANIMATION_DURATION,
+        },
+      }}
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 100 }}
       transition={{ duration: 0.25 }}
       className="mt-auto sticky bottom-0 bg-white px-4 py-8 flex flex-col md:flex-row items-center md:justify-between shadow-md text-gray-600"
     >
-      <div
-        className={cx(
-          'transition-opacity duration-200 ease-in-out',
-          isLoading && true && 'opacity-50 pointer-events-none'
-        )}
-      >
+      <div className="transition-opacity duration-200 ease-in-out">
         Page size
         <select
           value={perPage}
@@ -60,10 +66,7 @@ const Pagination: React.FC<PaginationProps> = ({
 
       <motion.div
         layout
-        className={cx(
-          'my-4 flex items-center transition-opacity duration-200 ease-in-out',
-          isLoading && true && 'opacity-50 pointer-events-none'
-        )}
+        className="my-4 flex items-center transition-opacity duration-200 ease-in-out"
       >
         <motion.button
           layout
@@ -79,6 +82,7 @@ const Pagination: React.FC<PaginationProps> = ({
         {pages.map((p, i) =>
           p ? (
             <motion.button
+              {...appearAnimation}
               layout
               key={`${p}-${i}`}
               className={cx(
@@ -86,9 +90,6 @@ const Pagination: React.FC<PaginationProps> = ({
                 p === page && 'border-blue-400'
               )}
               onClick={() => setPage(p)}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
             >
               {p}
             </motion.button>
@@ -108,6 +109,11 @@ const Pagination: React.FC<PaginationProps> = ({
           <NextPageIcon />
         </motion.button>
       </motion.div>
+
+      <div className="text-gray-600 text-sm">
+        Showing {page * perPage - perPage + 1} - {page * perPage} of{' '}
+        {formatNumber(totalCount, 'user')}
+      </div>
     </motion.div>
   )
 }

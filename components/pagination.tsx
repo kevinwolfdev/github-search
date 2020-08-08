@@ -8,6 +8,7 @@ import {
   appearAnimation,
 } from '@lib/animations'
 import { Search } from '@lib/api'
+import { useShortcut } from '@lib/shortcuts'
 import { buildPagination, formatNumber } from '@lib/utils'
 
 import MoreIcon from './icons/more'
@@ -33,6 +34,22 @@ const Pagination: React.FC<PaginationProps> = ({
     page,
     totalPages,
   ])
+
+  useShortcut('initialPage', () => {
+    setPage(1)
+  })
+
+  useShortcut('finalPage', () => {
+    setPage(totalPages)
+  })
+
+  useShortcut('previousPage', () => {
+    setPage(page - 1)
+  })
+
+  useShortcut('nextPage', () => {
+    setPage(page + 1)
+  })
 
   return (
     <motion.div

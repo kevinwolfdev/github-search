@@ -7,6 +7,7 @@ import {
   ANIMATION_DURATION,
   appearAnimation,
 } from '@lib/animations'
+import { useShortcut, shortcuts } from '@lib/shortcuts'
 
 import ClearIcon from './icons/clear'
 import SearchIcon from './icons/search'
@@ -20,15 +21,17 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => {
   const ref = React.useRef<HTMLInputElement>(null)
   const [debouncedCallback] = useDebouncedCallback(onChange, 250)
 
-  React.useEffect(() => {
-    ref.current?.focus()
-  }, [])
-
   const handleClear = React.useCallback(() => {
     ref.current!.value = ''
     ref.current!.focus()
     onChange('')
   }, [onChange])
+
+  React.useEffect(() => {
+    ref.current!.focus()
+  }, [])
+
+  useShortcut('clearSearch', handleClear)
 
   return (
     <motion.div
@@ -49,6 +52,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => {
         placeholder="Search..."
         className="w-full shadow-md bg-transparent p-4 pl-12 text-xl placeholder-gray-600 relative z-10"
         onChange={(e) => debouncedCallback(e.target.value)}
+        onKeyUp={(e) => {
+          e.preventDefault()
+
+          if (e.key === shortcuts.clearSearch.key) {
+            handleClear()
+          }
+        }}
       />
       <AnimatePresence>
         {value ? (

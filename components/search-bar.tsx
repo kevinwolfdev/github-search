@@ -1,3 +1,4 @@
+import cx from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
 import React from 'react'
 import { useDebouncedCallback } from 'use-debounce/lib'
@@ -13,43 +14,43 @@ import ClearIcon from './icons/clear'
 import SearchIcon from './icons/search'
 
 type SearchBarProps = {
+  inline?: boolean
   value: string
   onChange: (value: string) => void
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ inline, value, onChange }) => {
   const ref = React.useRef<HTMLInputElement>(null)
   const [debouncedCallback] = useDebouncedCallback(onChange, 250)
 
   const handleClear = React.useCallback(() => {
     ref.current!.value = ''
-    ref.current!.focus()
+    ref.current!.blur()
     onChange('')
   }, [onChange])
 
   React.useEffect(() => {
-    ref.current!.focus()
-  }, [])
+    if (inline) {
+      ref.current!.focus()
+    }
+  }, [inline])
 
   useShortcut('clearSearch', handleClear)
 
   return (
     <motion.div
-      {...{
-        ...slideDownAnimation,
-        transition: {
-          ...slideDownAnimation.transition,
-          delay: ANIMATION_DURATION,
-        },
-      }}
-      className="sticky top-0 bg-white flex items-center z-10"
+      {...(inline ? appearAnimation : slideDownAnimation)}
+      className={cx(
+        'sticky top-0 bg-white flex items-center z-10',
+        inline && 'rounded-md'
+      )}
     >
       <SearchIcon className="absolute left-4 text-gray-600" />
       <input
         ref={ref}
         type="text"
         defaultValue={value}
-        placeholder="Search..."
+        placeholder="Search GitHub users..."
         className="w-full shadow-md bg-transparent p-4 pl-12 text-xl placeholder-gray-600 relative z-10"
         onChange={(e) => debouncedCallback(e.target.value)}
         onKeyUp={(e) => {

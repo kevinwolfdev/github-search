@@ -12,18 +12,21 @@ const Home: React.FC = () => {
 
   return (
     <React.Fragment>
-      <SearchBar value={query} onChange={setQuery} />
       <AnimatePresence exitBeforeEnter>
         {query ? (
-          <SearchResult key={query} query={query} />
+          <React.Fragment key={query}>
+            <SearchBar value={query} onChange={setQuery} />
+            <SearchResult query={query} />
+          </React.Fragment>
         ) : (
           <Message
             illustration={UsersIllustration}
-            title="GitHub User Search"
-            text="Your search results will appear here"
             extra={
-              <div className="invisible md:visible mt-12 text-gray-500">
-                Pro tip: press <kbd>?</kbd> to see keyboard shortcuts.
+              <div className="mt-12">
+                <SearchBar inline value={query} onChange={setQuery} />
+                <div className="invisible md:visible mt-12 text-gray-500">
+                  Pro tip: press <kbd>?</kbd> to see keyboard shortcuts.
+                </div>
               </div>
             }
           />

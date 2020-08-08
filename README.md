@@ -2,46 +2,68 @@
 
 GitHub user search web application.
 
-## Tech stack
+## Setup
 
-- [Next.js](https://nextjs.org)
-- [TailwindCSS](https://tailwindcss.com)
-- [Framer Motion](https://www.framer.com/motion/)
-- [Vercel](https://vercel.com)
-
-## Development workflow
-
-### Clone this repo
+### 1. Clone this repo
 
 ```bash
 gh repo clone kevinwolfdev/github-user-search
 ```
 
-### Install dependencies
+### 2. Install dependencies
 
 ```bash
 yarn install
 ```
 
-### Start the dev server
+### 3. Start the local server
 
 ```bash
 yarn dev
 ```
 
+### 4. Deployment
+
+```bash
+vercel
+```
+
 ## Highlights
 
-- 📱 Mobile-first.
-- 🤩 Delightful animations and illustrations from [Undraw](https://undraw.co).
-- ♻️ Debounced search to avoid exceeding the
-  [GitHub Public API Rate Limit](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting).
-- 🚀 Progressively enhanced. When the GitHub Public API Rate Limit is exceeded,
-  the UI will keep functional, enabling the user to navigate through cached
-  data.
-- 📖 Pagination
-- 💀 Loading state skeletons using a delayed appear animation to avoid flashing
-  them on fast connections.
-- ✨ Keyboard shortcuts
+### 📱 Mobile-first.
+
+No taking in count mobile users is a crime these days!
+
+![Mobile view](./.github/images/mobile.png)
+
+### 🤩 Delightful User Experience
+
+Smooth animations powered by [Framer Motion](https://framer.com/motion) and
+friendly animation provided by [Undraw](https://undraw.co).
+
+![Home view](./.github/images/home-view.png)
+
+### 🚀 Progressively enhanced.
+
+When the GitHub Public API Rate Limit is exceeded, the UI will still be
+functional and show relevant data, enabling the user to navigate through cached
+data and refetch when the Rate Limit is restored.
+
+![Core API error](./.github/images/core-api-error.png)
+
+![Search API error](./.github/images/search-api-error.png)
+
+### 💀 Loading state skeletons
+
+Using a delayed appear animation to avoid flashing on fast connections.
+
+![Loading Skeleton](./.github/images/skeleton.png)
+
+### ✨ Keyboard shortcuts
+
+For the keyboard savvy!
+
+![Shortcuts](./.github/images/shortcuts.png)
 
 ## Notes
 

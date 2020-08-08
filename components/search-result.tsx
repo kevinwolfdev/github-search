@@ -51,19 +51,20 @@ const SearchResult: React.FC<SearchResultsProps> = ({ query }) => {
   // This is a little trick I implemented to avoid hidding the
   // pagination bar while switching pages and showing it when the API
   // returned an error.
-  const pagination = usePersistedPagination(query, data)
+  const persistedData = usePersistedData(data)
 
   // Track UI state for proper animations.
   const state = React.useMemo(() => {
     if (isLoading) return 'loading'
     if (error && !data) return 'error'
+    if (data && data.users.length === 0) return 'empty'
     return 'data'
   }, [data, error, isLoading])
 
   // Generate key for animated items. On this way, switching
   // between pages with data already fetched will be smoother.
   const key = React.useMemo(() => {
-    if (data) return `data-${JSON.stringify(data.users)}`
+    if (state === 'data' && data) return `data-${JSON.stringify(data.users)}`
     return state
   }, [data, state])
 
@@ -85,11 +86,25 @@ const SearchResult: React.FC<SearchResultsProps> = ({ query }) => {
                 extra={
                   <button
                     type="button"
-                    className="mt-8 bg-blue-500 hover:bg-blue-700 transition-colors duration-200 ease-in-out text-white px-4 py-2 rounded-md"
+                    className="mt-8 button"
                     onClick={revalidate}
                   >
                     Retry
                   </button>
+                }
+              />
+            ) : null}
+
+            {state === 'empty' ? (
+              <Message
+                icon={ErrorIcon}
+                title="No results"
+                text={
+                  <React.Fragment>
+                    Looks like there are no results for <strong>{query}</strong>
+                    <br />
+                    Wanna give it another shot?
+                  </React.Fragment>
                 }
               />
             ) : null}
@@ -99,9 +114,9 @@ const SearchResult: React.FC<SearchResultsProps> = ({ query }) => {
         </AnimatePresence>
       </motion.main>
 
-      {pagination !== undefined ? (
+      {persistedData && persistedData.users.length ? (
         <Pagination
-          {...pagination}
+          {...persistedData.pagination}
           page={page}
           perPage={perPage}
           setPerPage={setPerPage}
@@ -112,14 +127,14 @@ const SearchResult: React.FC<SearchResultsProps> = ({ query }) => {
   )
 }
 
-const usePersistedPagination = (query: string, data?: Search) => {
+const usePersistedData = (data?: Search) => {
   const [prevData, setPrevData] = React.useState<Search>()
 
   React.useEffect(() => {
     if (data) setPrevData(data)
   }, [data])
 
-  return prevData?.pagination
+  return prevData
 }
 
 export default SearchResult

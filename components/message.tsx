@@ -8,7 +8,7 @@ type MessageProps = {
     React.SVGProps<SVGSVGElement> & React.RefAttributes<SVGSVGElement>
   >
   title: string
-  text: string
+  text: React.ReactNode
   extra?: React.ReactNode
 }
 

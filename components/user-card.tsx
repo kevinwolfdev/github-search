@@ -55,7 +55,7 @@ const UserCard: React.FC<UserCardProps> = ({ i, login, avatarUrl }) => {
           transition: {
             ...(isPlaceholder ? appearAnimation : slideRightAnimation)
               .transition,
-            delay: isPlaceholder ? 0.5 : i * 0.1,
+            delay: isPlaceholder ? 1 : i * 0.1,
           },
         }),
         hidden: {

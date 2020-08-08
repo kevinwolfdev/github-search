@@ -76,3 +76,18 @@ body {
     transform: translateX(100%);
   }
 }
+
+.button {
+  @apply bg-blue-500;
+  @apply transition-colors;
+  @apply duration-200;
+  @apply ease-in-out;
+  @apply text-white;
+  @apply px-4;
+  @apply py-2;
+  @apply rounded-md;
+}
+
+.button:hover {
+  @apply bg-blue-700;
+}

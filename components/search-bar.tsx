@@ -3,11 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import React from 'react'
 import { useDebouncedCallback } from 'use-debounce/lib'
 
-import {
-  slideDownAnimation,
-  ANIMATION_DURATION,
-  appearAnimation,
-} from '@lib/animations'
+import { slideDownAnimation, appearAnimation } from '@lib/animations'
 import { useShortcut, shortcuts } from '@lib/shortcuts'
 
 import ClearIcon from './icons/clear'
@@ -21,7 +17,7 @@ type SearchBarProps = {
 
 const SearchBar: React.FC<SearchBarProps> = ({ inline, value, onChange }) => {
   const ref = React.useRef<HTMLInputElement>(null)
-  const [debouncedCallback] = useDebouncedCallback(onChange, 250)
+  const [debouncedCallback] = useDebouncedCallback(onChange, 500)
 
   const handleClear = React.useCallback(() => {
     ref.current!.value = ''

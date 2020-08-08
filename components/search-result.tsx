@@ -5,7 +5,8 @@ import useSWR from 'swr'
 import { appearAnimation } from '@lib/animations'
 import { search, Search } from '@lib/api'
 
-import ErrorIcon from './icons/error'
+import EmptyIllustration from './illustrations/empty'
+import TimeoutIllustration from './illustrations/timeout'
 import Message from './message'
 import Pagination from './pagination'
 import UsersList from './users-list'
@@ -80,7 +81,7 @@ const SearchResult: React.FC<SearchResultsProps> = ({ query }) => {
 
             {state === 'error' ? (
               <Message
-                icon={ErrorIcon}
+                illustration={TimeoutIllustration}
                 title="Whoops!"
                 text={`Error fetching search results: ${error.message}`}
                 extra={
@@ -97,7 +98,7 @@ const SearchResult: React.FC<SearchResultsProps> = ({ query }) => {
 
             {state === 'empty' ? (
               <Message
-                icon={ErrorIcon}
+                illustration={EmptyIllustration}
                 title="No results"
                 text={
                   <React.Fragment>

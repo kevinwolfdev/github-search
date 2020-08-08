@@ -4,7 +4,7 @@ import React from 'react'
 import { appearAnimation } from '@lib/animations'
 
 type MessageProps = {
-  icon: React.ForwardRefExoticComponent<
+  illustration: React.ForwardRefExoticComponent<
     React.SVGProps<SVGSVGElement> & React.RefAttributes<SVGSVGElement>
   >
   title: string
@@ -13,7 +13,7 @@ type MessageProps = {
 }
 
 const Message: React.FC<MessageProps> = ({
-  icon: Icon,
+  illustration: Illustration,
   title,
   text,
   extra,
@@ -21,9 +21,9 @@ const Message: React.FC<MessageProps> = ({
   return (
     <motion.div
       {...appearAnimation}
-      className="flex flex-col items-center my-auto text-center"
+      className="flex flex-col items-center my-auto text-center p-8"
     >
-      <Icon className="mx-auto w-24 h-24 text-gray-500" />
+      <Illustration className="mx-auto w-full max-w-xs h-auto text-gray-500" />
       <h1 className="mt-8 text-4xl font-bold">{title}</h1>
       <p className="mt-4 text-xl md:text-2xl text-gray-600 w-full md:w-3/4">
         {text}

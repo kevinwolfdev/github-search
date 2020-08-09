@@ -32,18 +32,18 @@ vercel
 
 ### 📱 Mobile-first.
 
-No taking in count mobile users is a crime these days!
+Not taking in count mobile users is a crime these days!
 
 ![Mobile view](./.github/images/mobile.png)
 
 ### 🤩 Delightful User Experience
 
 Smooth animations powered by [Framer Motion](https://framer.com/motion) and
-friendly animation provided by [Undraw](https://undraw.co).
+friendly illustrations provided by [Undraw](https://undraw.co).
 
 ![Home view](./.github/images/home-view.png)
 
-### 🚀 Progressively enhanced.
+### 🚀 Progressively enhanced
 
 When the GitHub Public API Rate Limit is exceeded, the UI will still be
 functional and show relevant data, enabling the user to navigate through cached
